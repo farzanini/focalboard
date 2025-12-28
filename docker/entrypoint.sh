@@ -10,6 +10,13 @@ echo "PORT: ${PORT:-not set (will use config default)}"
 echo "FOCALBOARD_SERVERROOT: ${FOCALBOARD_SERVERROOT:-not set (will use config default)}"
 echo "Config path: $CONFIG_PATH"
 
+# Ensure data directory exists and is writable
+echo "Checking data directory..."
+mkdir -p /opt/focalboard/data/files
+if [ ! -w /opt/focalboard/data ]; then
+    echo "WARNING: Data directory is not writable. This may cause issues."
+fi
+
 # If FOCALBOARD_SERVERROOT is not set, try to construct it from common environment variables
 # This is critical - the frontend needs the correct serverRoot to connect
 if [ -z "$FOCALBOARD_SERVERROOT" ]; then
@@ -34,9 +41,22 @@ if [ -z "$FOCALBOARD_SERVERROOT" ]; then
     fi
 fi
 
+# Verify the server binary exists and is executable
+if [ ! -f /opt/focalboard/bin/focalboard-server ]; then
+    echo "ERROR: Server binary not found at /opt/focalboard/bin/focalboard-server"
+    exit 1
+fi
+
+if [ ! -x /opt/focalboard/bin/focalboard-server ]; then
+    echo "ERROR: Server binary is not executable"
+    exit 1
+fi
+
 # Build command arguments
+echo "================================"
 if [ -n "$PORT" ]; then
     echo "Starting server with PORT=$PORT and config=$CONFIG_PATH"
+    echo "Server will listen on 0.0.0.0:$PORT (all interfaces)"
     exec /opt/focalboard/bin/focalboard-server -config "$CONFIG_PATH" -port "$PORT"
 else
     echo "Starting server with config=$CONFIG_PATH (using port from config)"
