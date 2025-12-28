@@ -33,6 +33,9 @@ COPY --from=nodebuild --chown=nobody:nogroup /webapp/pack pack/
 COPY --from=gobuild --chown=nobody:nogroup /go/src/focalboard/bin/docker/focalboard-server bin/
 COPY --from=gobuild --chown=nobody:nogroup /go/src/focalboard/LICENSE.txt LICENSE.txt
 COPY --from=gobuild --chown=nobody:nogroup /go/src/focalboard/docker/server_config.json config.json
+COPY --from=gobuild --chown=nobody:nogroup /go/src/focalboard/docker/entrypoint.sh /opt/focalboard/entrypoint.sh
+
+RUN chmod +x /opt/focalboard/entrypoint.sh
 
 USER nobody
 
@@ -40,6 +43,6 @@ EXPOSE 8000/tcp 9092/tcp
 
 VOLUME /opt/focalboard/data
 
-CMD ["/opt/focalboard/bin/focalboard-server"]
+CMD ["/opt/focalboard/entrypoint.sh"]
 
 
