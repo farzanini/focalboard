@@ -42,3 +42,4 @@ VOLUME /opt/focalboard/data
 
 CMD ["/opt/focalboard/bin/focalboard-server"]
 
+

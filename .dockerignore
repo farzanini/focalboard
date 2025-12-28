@@ -9,3 +9,9 @@ website/
 linux/
 go.work
 go.work.sum
+
+# Exclude .NET files to prevent nixpacks from detecting them
+*.sln
+*.csproj
+*.cs
+win-wpf/**

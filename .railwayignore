@@ -1,0 +1,9 @@
+win-wpf/
+*.sln
+*.csproj
+*.cs
+mac/
+linux/
+website/
+experiments/
+
