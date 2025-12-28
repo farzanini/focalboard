@@ -1,6 +1,6 @@
 # Force nixpacks to use Go/Node, not .NET
 [phases.setup]
-nixPkgs = ["nodejs-18_x", "go_1_18", "make"]
+nixPkgs = ["nodejs-18_x", "go_1_18", "gnumake"]
 
 [phases.install]
 cmds = [
